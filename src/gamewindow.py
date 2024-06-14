@@ -20,6 +20,10 @@ class GameWindow(pyglet.window.Window):
     match(symbol):
       case key.A | key.D | key.W | key.S | key.SPACE:
         self.directions[symbol] = True
+      case key.R:
+        self.game.ENDED = True
+        self.game.clear()
+        self.game = Game(keys=self.directions, batch=self.main_batch)
   
   def on_key_release(self, symbol: int, modifiers: int):
     match(symbol):
@@ -31,4 +35,5 @@ class GameWindow(pyglet.window.Window):
     self.main_batch.draw()
   
   def update(self, dt: float) -> None:
-    self.game.update(dt)
+    if not self.game.ENDED:
+      self.game.update(dt)

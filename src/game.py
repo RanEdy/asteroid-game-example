@@ -18,6 +18,7 @@ class Game:
     self.score_label: Label = pyglet.text.Label(text="Score: " + str(self.score), x=10, y=460, batch=batch)
     self.lives_label: Label = pyglet.text.Label(text='Lives: 3', x=10, y= 480, batch=batch)
     self.player: Player
+    self.ENDED: bool = False
 
     self.init_player()
 
@@ -73,10 +74,21 @@ class Game:
       except ValueError:
         pass
 
+  def clear(self) -> None:
+    for entity in self.asteroids_list + self.player.bullet_list + [self.player]:
+      entity.delete()
+    self.lives_label.delete()
+    self.score_label.delete()
+    self.batch.invalidate()
+
   def update(self, dt: float) -> None:
     if self.player.alive:
       self.update_entities(dt)
       self.spawn_asteroids()
       self.update_gui()
       self.ticks += 1
+    else:
+      self.ENDED = True
+      self.clear()
+      return
     #print(len(self.asteroids_list))
