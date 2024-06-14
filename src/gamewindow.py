@@ -7,12 +7,10 @@ from gamewindow_constants import WINDOW_WIDTH, WINDOW_HEIGHT
 class GameWindow(pyglet.window.Window):
   def __init__(self):
     super().__init__(width=WINDOW_WIDTH, height=WINDOW_HEIGHT, caption='Asteroid Game')
-
     # Inicializar recursos
     pyglet.resource.path = ['../resources']
     pyglet.resource.reindex()
 
-    # Atributos
     self.main_batch: Batch = pyglet.graphics.Batch()
     self.directions: dict[int, bool] = { key.A : False, key.D : False, key.W: False, key.S: False, key.SPACE: False }
     self.game: Game = Game(keys=self.directions, batch=self.main_batch)

@@ -80,6 +80,6 @@ class Game:
     if self.player.alive:
       self.update_entities(dt)
       self.spawn_asteroids()
-    self.update_gui()
-    self.ticks += 1
+      self.update_gui()
+      self.ticks += 1
     #print(len(self.asteroids_list))

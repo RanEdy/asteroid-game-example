@@ -18,6 +18,13 @@ class Player(Entity):
     self.limit_y_min: int
     self.limit_y_max: int
 
+  def update(self, dt: float, ticks: int) -> None:
+    self._check_immunity(ticks)
+    self.handle_keys(dt, ticks)
+    self.check_bounds()
+    self._check_collision(ticks)
+    #print(f'Bullets: {len(self.bullet_list)}')
+
   def handle_keys(self, dt: float, ticks: int) -> None:
     if self.keys[key.A]:
       self.move(-self.speed.x * dt, 0)
@@ -84,11 +91,5 @@ class Player(Entity):
     else:
       self.sprite.opacity = 255
   
-  def update(self, dt: float, ticks: int) -> None:
-    self._check_immunity(ticks)
-    self.handle_keys(dt, ticks)
-    self.check_bounds()
-    self._check_collision(ticks)
-    #print(f'Bullets: {len(self.bullet_list)}')
 
     
