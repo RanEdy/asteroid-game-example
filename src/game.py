@@ -44,11 +44,8 @@ class Game:
         asteroid.set_speed(Vec2(random.randint(-150, 150), random.randint(-400, -150)))
         self.asteroids_list.append(asteroid)
         #print('Asteroide creado: ', asteroid.get_x(), asteroid.get_y())
-      self.next_asteroids_time_interval()
+      self.asteroids_time_interval = self.ticks + random.randint(50, 400)
   
-  def next_asteroids_time_interval(self) -> None:
-    self.asteroids_time_interval = self.ticks + random.randint(50, 400)
-
   def update_entities(self, dt: float) -> None:
     for entity in self.asteroids_list + self.player.bullet_list + [self.player]:
       entity.update(dt, self.ticks)
