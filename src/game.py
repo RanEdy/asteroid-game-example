@@ -15,7 +15,7 @@ class Game:
     self.keys: dict[int, bool] = keys
     self.batch: Batch = batch
     self.score: int = 0
-    self.score_label: Label = pyglet.text.Label(text="Score: " + str(self.score), x=10, y=460, batch=batch)
+    self.score_label: Label = pyglet.text.Label(text='Score: ' + str(self.score), x=10, y=460, batch=batch)
     self.lives_label: Label = pyglet.text.Label(text='Lives: 3', x=10, y= 480, batch=batch)
     self.player: Player
     self.ENDED: bool = False
@@ -75,11 +75,12 @@ class Game:
         pass
 
   def clear(self) -> None:
-    for entity in self.asteroids_list + self.player.bullet_list + [self.player]:
+    for entity in self.asteroids_list + self.player.bullet_list:
       entity.delete()
+    self.asteroids_list.clear()
+    self.player.bullet_list.clear()
     self.lives_label.delete()
     self.score_label.delete()
-    self.batch.invalidate()
 
   def update(self, dt: float) -> None:
     if self.player.alive:
@@ -90,5 +91,12 @@ class Game:
     else:
       self.ENDED = True
       self.clear()
-      return
+      self.end_label: Label = pyglet.text.Label(text='PRESS \'R\' TO RESTART THE GAME OR \'ESC\' TO EXIT',
+                                          font_size=20,
+                                          x=WINDOW_WIDTH//2, y=WINDOW_HEIGHT//2,
+                                          color=(255, 255, 255, 255),
+                                          anchor_x='center',
+                                          batch=self.batch
+                                          )
+      self.end_label.position = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2, self.end_label.z)
     #print(len(self.asteroids_list))
