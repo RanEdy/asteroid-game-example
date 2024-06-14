@@ -22,6 +22,16 @@ class Game:
 
     self.init_player()
 
+  def update(self, dt: float) -> None:
+    if self.player.alive:
+      self.update_entities(dt)
+      self.spawn_asteroids()
+      self.update_gui()
+      self.ticks += 1
+    else:
+      self.end()
+
+
   def init_player(self) -> None:
     self.player: Player = Player(self.batch)
     self.player.set_pos(Vec2(WINDOW_WIDTH//2, WINDOW_HEIGHT//2))
@@ -82,21 +92,14 @@ class Game:
     self.lives_label.delete()
     self.score_label.delete()
 
-  def update(self, dt: float) -> None:
-    if self.player.alive:
-      self.update_entities(dt)
-      self.spawn_asteroids()
-      self.update_gui()
-      self.ticks += 1
-    else:
-      self.ENDED = True
-      self.clear()
-      self.end_label: Label = pyglet.text.Label(text='PRESS \'R\' TO RESTART THE GAME OR \'ESC\' TO EXIT',
+  def end(self) -> None:
+    self.ENDED = True
+    self.clear()
+    self.end_label: Label = pyglet.text.Label(text='PRESS \'R\' TO RESTART THE GAME OR \'ESC\' TO EXIT',
                                           font_size=20,
                                           x=WINDOW_WIDTH//2, y=WINDOW_HEIGHT//2,
                                           color=(255, 255, 255, 255),
                                           anchor_x='center',
                                           batch=self.batch
                                           )
-      self.end_label.position = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2, self.end_label.z)
-    #print(len(self.asteroids_list))
+    self.end_label.position = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2, self.end_label.z)
