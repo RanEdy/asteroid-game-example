@@ -1,6 +1,7 @@
 import pyglet, gamewindow
 # TODO
-#
+# - Agregar SFX
+# - Agregar animaciones y particulas
 #
 def main() -> None:
   FPS: int = 144
