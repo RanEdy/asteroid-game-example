@@ -24,6 +24,11 @@ class GameWindow(pyglet.window.Window):
         self.game.ENDED = True
         self.game.clear()
         self.game = Game(keys=self.directions, batch=self.main_batch)
+      case key.ESCAPE:
+        self.game.ENDED = True
+        self.game.clear()
+        self.clear()
+        self.close()
   
   def on_key_release(self, symbol: int, modifiers: int):
     match(symbol):
