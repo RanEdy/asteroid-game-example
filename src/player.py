@@ -6,24 +6,27 @@ from entity import Entity, EntityType
 class Player(Entity):
   def __init__(self, batch: Batch) -> None:
     super().__init__('player.png', batch)
-    self.keys: dict[int, bool]
+    
     self.lives = 3
-    self.speed= Vec2(250, 180)
+    self.speed = Vec2(250, 180)
+    self.type = EntityType.PLAYER
+    
+    self.keys: dict[int, bool]
     self.fire_rate: int = 60
     self.next_fire_time: int = 0
-    self.type: int = EntityType.PLAYER
-    self.bullet_list = []
+    self.bullet_list: list[Entity] = []
     self.limit_x_min: int
     self.limit_x_max: int
     self.limit_y_min: int
     self.limit_y_max: int
 
   def update(self, dt: float, ticks: int) -> None:
-    self._check_immunity(ticks)
-    self.handle_keys(dt, ticks)
-    self.check_bounds()
-    self._check_collision(ticks)
-    #print(f'Bullets: {len(self.bullet_list)}')
+    if(self.alive):
+      self._check_immunity(ticks)
+      self.handle_keys(dt, ticks)
+      self.check_bounds()
+      self._check_collision(ticks)
+      #print(f'Bullets: {len(self.bullet_list)}')
 
   def handle_keys(self, dt: float, ticks: int) -> None:
     if self.keys[key.A]:
@@ -83,7 +86,7 @@ class Player(Entity):
       self.add_lives(-1)
       self.immunity_time = ticks + 300
   
-  def _check_immunity(self, ticks) -> None:
+  def _check_immunity(self, ticks: int) -> None:
     self.immunity = self.immunity_time > ticks
 
     if self.immunity:
@@ -91,5 +94,3 @@ class Player(Entity):
     else:
       self.sprite.opacity = 255
   
-
-    

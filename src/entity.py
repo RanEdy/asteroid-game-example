@@ -21,13 +21,14 @@ class Entity:
     self._center_image(self.entity_img)
     self.sprite: Sprite = pyglet.sprite.Sprite(img=self.entity_img, x=-5000, y=0, batch=batch)
     self.lives: int = 1
-    self.speed : Vec2 = Vec2(0, 0)
+    self.lives_label: Label
+    self.speed: Vec2 = Vec2(0, 0)
     self.type: int = EntityType.HOSTILE
     self.alive: bool = True
     self.immunity: bool = False
     self.immunity_time: int = 0
     self.auto_rotation_angle: float = 0
-    self.enemy_list = []
+    self.enemy_list: list['Entity'] = []
     self.points: int = 1
     # --------- HitBox -----------
     self.hitbox_w_factor: float = 0.7
@@ -39,17 +40,13 @@ class Entity:
     self.hitbox_shape: Box = Box(
       x=self.hitbox_left_corner.x, y= self.hitbox_left_corner.y - self.hitbox_height,
       width=self.hitbox_width, height=self.hitbox_height,
-      thickness=2.0, color=(255, 0, 0, 255), batch=batch
+      thickness=2.0, color=(255, 0, 0, 0), batch=batch
       )
     
     # ------ DEBUG ----------
-    self.lives_label: Label
     if DEBUG:
       self.lives_label = pyglet.text.Label(text=str(self.lives), x=self.sprite.x, y=self.sprite.y, color=(255, 0, 0, 255), batch=batch)
-    
-    if not DEBUG:
-      self.hitbox_shape.opacity = 0
-      
+      self.hitbox_shape.opacity = 255
 
   def update(self, dt: float, ticks: int) -> None:
     self._check_immunity(ticks)
@@ -64,7 +61,7 @@ class Entity:
     self.hitbox_shape.delete()
     self.sprite.delete()
 
-  def set_enemy_list(self, list) -> None:
+  def set_enemy_list(self, list: list['Entity']) -> None:
     self.enemy_list = list
 
   def set_rotation(self, angle_deg: int) -> None:
@@ -93,7 +90,7 @@ class Entity:
     self.type = type
 
   def set_size(self, width: int, height: int) -> None:
-    self._scale_sprite(self.sprite, width, height)
+    self._scale_sprite(width, height)
   
   def get_width(self) -> int:
     return self.sprite.width
@@ -147,13 +144,12 @@ class Entity:
     image.anchor_x = image.width // 2
     image.anchor_y = image.height // 2
 
-  def _scale_sprite(self, sprite: Sprite, width: int, height: int) -> None:
-    h_factor: float = height / sprite.height
-    w_factor: float = width / sprite.width
-    sprite.scale_y = h_factor
-    sprite.scale_x = w_factor
+  def _scale_sprite(self, width: int, height: int) -> None:
+    h_factor: float = height / self.sprite.height
+    w_factor: float = width / self.sprite.width
+    self.sprite.scale_y = h_factor
+    self.sprite.scale_x = w_factor
     self._update_hitbox()
-    self.hitbox_shape.position = (self.hitbox_left_corner.x, self.hitbox_left_corner.y - self.hitbox_height)
     self.hitbox_shape.width = self.hitbox_width
     self.hitbox_shape.height = self.hitbox_height
 
