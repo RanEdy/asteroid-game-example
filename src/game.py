@@ -15,8 +15,8 @@ class Game:
     self.keys: dict[int, bool] = keys
     self.batch: Batch = batch
     self.score: int = 0
-    self.score_label: Label = pyglet.text.Label(text='Score: ' + str(self.score), x=10, y=460, batch=batch)
-    self.lives_label: Label = pyglet.text.Label(text='Lives: 3', x=10, y= 480, batch=batch)
+    self.score_label: Label = pyglet.text.Label(text='Score: ' + str(self.score), font_size=18, x=10, y=460, batch=batch)
+    self.lives_label: Label = pyglet.text.Label(text='Lives: 3', font_size=18, x=10, y= 480, batch=batch)
     self.player: Player
     self.ENDED: bool = False
 
