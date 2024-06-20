@@ -130,7 +130,7 @@ class Entity:
         if self._collision_with(entity):
           self._on_collision(entity, ticks)
 
-  def _check_immunity(self, ticks) -> None:
+  def _check_immunity(self, ticks: int) -> None:
     self.immunity = self.immunity_time > ticks
 
   def _auto_move(self, dt: float) -> None:
